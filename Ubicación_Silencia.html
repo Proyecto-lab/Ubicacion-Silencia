@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Procesando...</title>
+</head>
+<body>
+    <p>Enviando información del equipo Silencia, por favor espera...</p>
+
+    <script>  //Inicio del java script
+        // 1. Obtener la palabra desde la URL del QR
+        const urlParams = new URLSearchParams(window.location.search);
+        const palabra = urlParams.get('palabra') || 'No especificada';
+
+        // Función para enviar los datos a tu formulario/servidor
+        function enviarDatos(latitud = null, longitud = null) {
+            // Reemplaza esto con la URL de tu formulario, webhook o Google Sheets
+            const urlDestino = "https://tu-servidor.com"; 
+            
+            const datos = {
+                palabra: palabra,
+                latitud: latitud,
+                longitud: longitud,
+                acepto_gps: latitud !== null
+            };
+
+            // Enviar datos en segundo plano
+            fetch(urlDestino, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(datos)
+            })
+            .then(() => {
+                alert("¡Datos enviados con éxito!");
+                // Opcional: Redirigir al usuario a una página de gracias
+            })
+            .catch(() => alert("Error al enviar los datos."));
+        }
+
+        // 2. Solicitar GPS al usuario de forma nativa
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    // Si acepta, envía palabra + coordenadas
+                    enviarDatos(position.coords.latitude, position.coords.longitude);
+                },
+                (error) => {
+                    // Si rechaza o falla, envía solo la palabra
+                    enviarDatos(null, null);
+                }
+            );
+        } else {
+            // El navegador no soporta GPS
+            enviarDatos(null, null);
+        }
+    </script>
+</body>
+</html>
