@@ -26,6 +26,8 @@
 
             // Enviar datos en segundo plano
             alert("Palabra recibida: " + palabra);
+            console.log(JSON.stringify(datos));
+            alert(JSON.stringify(datos));
             fetch(urlDestino, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -43,6 +45,7 @@
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     // Si acepta, envía palabra + coordenadas
+                    
                     enviarDatos(position.coords.latitude, position.coords.longitude);
                 },
                 (error) => {
