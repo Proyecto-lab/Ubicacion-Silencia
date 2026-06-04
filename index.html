@@ -28,16 +28,31 @@
             alert("Palabra recibida: " + palabra);
             console.log(JSON.stringify(datos));
             alert(JSON.stringify(datos));
+            
             fetch(urlDestino, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(datos)
             })
-            .then(() => {
-                alert("¡Datos enviados con éxito!");
-                // Opcional: Redirigir al usuario a una página de gracias
+            .then(async (response) => {
+
+             console.log("Estado:", response.status);
+
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}`);
+            }
+
+            const texto = await response.text();
+            console.log("Respuesta:", texto);
+
+            alert("¡Datos enviados con éxito!");
             })
-            .catch(() => alert("Error al enviar los datos."));
+            
+            // Arroja el número de erro si lo hay
+            .catch((error) => {
+                console.error(error);
+                alert("Error: " + error.message);
+            });
         }
 
         // 2. Solicitar GPS al usuario de forma nativa
