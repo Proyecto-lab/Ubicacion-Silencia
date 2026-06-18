@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubicación Silencia</title>
-    //Se agrega estilo para cambiar color y texto
+    
     <style>
         /* Estilos para centrar el contenido y dar diseño */
         body {
@@ -41,7 +41,6 @@
 <body>
     <p>Enviando información del equipo Silencia, por favor espera...</p>
 
-    /* Agregado nuevo en junio 18 */
     <div class="mensaje-resaltado">
         ¡Fresenius Medical Care!
     </div>
@@ -51,7 +50,7 @@
 
     <script>  //Inicio del java script
         window.onload = function() {
-            let nombre = confirm("Un placer nos acompañes, " + ". ¿Tu nombre el Paciente Feliz?");
+            let nombre = confirm("Un placer que nos acompañes, " + ". ¿Es tu nombre Paciente Feliz?");
             if (nombre) {
                     alert("¡Qué alegre! Muchas gracias por tu respuesta. 😊");
                 } else {
@@ -79,7 +78,6 @@
             };
 
             // Enviar datos en segundo plano
-            alert("Palabra recibida: " + palabra);
             console.log(JSON.stringify(datos));
             alert(JSON.stringify(datos));
             
@@ -98,8 +96,6 @@
 
             const texto = await response.text();
             console.log("Respuesta:", texto);
-
-            alert("¡Datos enviados con éxito!");
             })
             
             // Arroja el número de erro si lo hay
