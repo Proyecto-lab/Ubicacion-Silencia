@@ -41,18 +41,30 @@
 <body>
     <p>Enviando información del equipo Silencia, por favor espera...</p>
 
-    // Agregado nuevo junio 18
+    /* Agregado nuevo en junio 18 */
     <div class="mensaje-resaltado">
-        ¡Bienvenido a mi página web!
+        ¡Fresenius Medical Care!
     </div>
     <br>
     <img class="imagen-presentacion" src="https://picsum.photos/400/250" alt="Imagen de ejemplo">
 
 
     <script>  //Inicio del java script
+        window.onload = function() {
+            let nombre = confirm("Un placer nos acompañes, " + ". ¿Tu nombre el Paciente Feliz?");
+            if (nombre) {
+                    alert("¡Qué alegre! Muchas gracias por tu respuesta. 😊");
+                } else {
+                    alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
+                }
+             };
+
+
         // 1. Obtener la palabra desde la URL del QR
         const urlParams = new URLSearchParams(window.location.search);
         const palabra = urlParams.get('palabra') || 'No especificada';
+
+        
 
         // Función para enviar los datos a tu formulario/servidor
         function enviarDatos(latitud = null, longitud = null) {
