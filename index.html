@@ -2,10 +2,52 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ubicación Silencia</title>
+    //Se agrega estilo para cambiar color y texto
+    <style>
+        /* Estilos para centrar el contenido y dar diseño */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            padding: 50px;
+        }
+        
+     /* Clase específica para el mensaje azul que resalta */
+        .mensaje-resaltado {
+            color: #0056b3; /* Un azul llamativo */
+            font-size: 24px;
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: #e6f0fa; /* Fondo azul claro para resaltar más */
+            padding: 15px;
+            border-radius: 8px;
+            display: inline-block;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        /* Estilos para la imagen */
+        .imagen-presentacion {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+    </style>  
 </head>
+    
 <body>
     <p>Enviando información del equipo Silencia, por favor espera...</p>
+
+    // Agregado nuevo junio 18
+    <div class="mensaje-resaltado">
+        ¡Bienvenido a mi página web!
+    </div>
+    <br>
+    <img class="imagen-presentacion" src="https://picsum.photos/400/250" alt="Imagen de ejemplo">
+
 
     <script>  //Inicio del java script
         // 1. Obtener la palabra desde la URL del QR
