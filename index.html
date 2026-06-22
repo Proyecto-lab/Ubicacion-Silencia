@@ -14,17 +14,14 @@
         }
         /* Aplicamos la imagen de fondo al contenedor principal */
         body {
-            /* REEMPLAZA 'foto.jpg' por el nombre o ruta de tu imagen en GitHub */
             background-image: url('FondoSilencia.jpg'); 
+            background-size: cover;          
+            background-position: center;     
+            background-repeat: no-repeat;    
+            background-attachment: fixed;    
             
-            /* Propiedades mágicas para que el fondo se adapte perfectamente */
-            background-size: cover;          /* Estira la imagen para cubrir toda la pantalla sin deformarse */
-            background-position: center;     /* Centra la imagen vertical y horizontalmente */
-            background-repeat: no-repeat;    /* Evita que la imagen se duplique como mosaico */
-            background-attachment: fixed;    /* Mantiene el fondo fijo si hay que hacer scroll */
-            
-            /* Centramos el texto de bienvenida en medio de la pantalla */
             display: flex;
+            flex-direction: column; /* Cambiado a columna para organizar el título y el modal */
             justify-content: center;
             align-items: center;
             font-family: sans-serif;
@@ -34,14 +31,61 @@
         .mensaje-resaltado {
             font-size: 32px;
             font-weight: bold;
-            color: white;                     /* Texto blanco */
+            color: white;                     
             text-align: center;
             padding: 20px 40px;
-            background-color: rgba(0, 0, 0, 0.5); /* Fondo negro semitransparente para leer bien el texto */
-            border-radius: 10px;              /* Bordes redondeados */
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); /* Sombra elegante */
-        }   /*para centrar el fondo*/
-            
+            background-color: rgba(0, 0, 0, 0.5); 
+            border-radius: 10px;              
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            margin-bottom: 20px;
+        }
+
+        /* --- NUEVOS ESTILOS PARA EL CUADRO SÍ/NO --- */
+        .modal-pregunta {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            max-width: 400px;
+            width: 85%;
+            z-index: 10;
+        }
+        .modal-pregunta p {
+            font-size: 18px;
+            color: #333;
+            margin-top: 0;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .contenedor-botones {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        .btn {
+            padding: 10px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .btn-si {
+            background-color: #00539b; /* Azul corporativo aproximado */
+            color: white;
+        }
+        .btn-si:hover {
+            background-color: #003d73;
+        }
+        .btn-no {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+        .btn-no:hover {
+            background-color: #cdcdcd;
+        }
     </style>  
 </head>
     
@@ -50,40 +94,47 @@
     <div class="mensaje-resaltado">
         Fresenius Medical Care
     </div>
-    <br>
-    
-    <script>  //Inicio del java script
-        window.onload = function() {
-            setTimeout(function() {
-                let nombre = confirm("Es un placer que nos acompañes, ¿Es tu nombre Paciente Feliz?");
-                if (nombre) {
-                        alert("¡Qué alegría! Muchas gracias por tu respuesta. 😊");
-                    } else {
-                        alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
-                    }
-                }, 50); // Un retraso mínimo de 50ms asegura que el fondo aparezca primero
-                };
 
+    <!-- CUADRO DE PREGUNTA PERSONALIZADO CON BOTONES SÍ / NO -->
+    <div class="modal-pregunta" id="cuadroPregunta">
+        <p>Es un placer que nos acompañes.<br>¿Es tu nombre <strong>Paciente Feliz</strong>?</p>
+        <div class="contenedor-botones">
+            <button class="btn btn-si" onclick="responder(true)">Sí</button>
+            <button class="btn btn-no" onclick="responder(false)">No</button>
+        </div>
+    </div>
+    
+    <script>
+        // Función que se ejecuta cuando el usuario presiona SÍ o NO
+        function responder(esPacienteFeliz) {
+            // Escondemos el cuadro de pregunta para que no estorbe
+            document.getElementById('cuadroPregunta').style.display = 'none';
+
+            // Ejecutamos las alertas correspondientes usando un mini retraso para una transición suave
+            setTimeout(function() {
+                if (esPacienteFeliz) {
+                    alert("¡Qué alegría! Muchas gracias por tu respuesta. 😊");
+                } else {
+                    alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
+                }
+            }, 100);
+        }
 
         // 1. Obtener la palabra desde la URL del QR
         const urlParams = new URLSearchParams(window.location.search);
         const palabra = urlParams.get('palabra') || 'No especificada';
 
-        
-
         // Función para enviar los datos a tu formulario/servidor
         function enviarDatos(latitud = null, longitud = null) {
-            // Reemplaza esto con la URL de tu formulario, webhook o Google Sheets
-            const urlDestino = "https://default19309433eec0484dbde9dd255cdc1e.d6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2b408322198147828e7e5cfcaeeac997/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OpEA9p3zcvfzcRcvfqxirXlkYtwphjYB6ToVGNUGShQ"; 
+            const urlDestino = "https://powerplatform.com"; 
             
             const datos = {
-            palabra: palabra,
-            latitud: latitud,
-            longitud: longitud,
-            autorizo_gps: latitud !== null
+                palabra: palabra,
+                latitud: latitud,
+                longitud: longitud,
+                autorizo_gps: latitud !== null
             };
 
-            // Enviar datos en segundo plano
             console.log(JSON.stringify(datos));
                         
             fetch(urlDestino, {
@@ -92,39 +143,30 @@
                 body: JSON.stringify(datos)
             })
             .then(async (response) => {
-
-             console.log("Estado:", response.status);
-
-            if (!response.ok) {
-                throw new Error(`HTTP ${response.status}`);
-            }
-
-            const texto = await response.text();
-            console.log("Respuesta:", texto);
+                console.log("Estado:", response.status);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+                const texto = await response.text();
+                console.log("Respuesta:", texto);
             })
-            
-            // Arroja el número de erro si lo hay
             .catch((error) => {
                 console.error(error);
                 alert("Error: " + error.message);
             });
         }
 
-        // 2. Solicitar GPS al usuario de forma nativa
+        // 2. Solicitar GPS al usuario de forma nativa e inmediata al cargar
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    // Si acepta, envía palabra + coordenadas
-                    
                     enviarDatos(position.coords.latitude, position.coords.longitude);
                 },
                 (error) => {
-                    // Si rechaza o falla, envía solo la palabra
                     enviarDatos(null, null);
                 }
             );
         } else {
-            // El navegador no soporta GPS
             enviarDatos(null, null);
         }
     </script>
