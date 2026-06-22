@@ -54,13 +54,15 @@
     
     <script>  //Inicio del java script
         window.onload = function() {
-            let nombre = confirm("Es un placer que nos acompañes, " + ". ¿Es tu nombre Paciente Feliz?");
-            if (nombre) {
-                    alert("¡Qué alegría! Muchas gracias por tu respuesta. 😊");
-                } else {
-                    alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
-                }
-             };
+            setTimeout(function() {
+                let nombre = confirm("Es un placer que nos acompañes, ¿Es tu nombre Paciente Feliz?");
+                if (nombre) {
+                        alert("¡Qué alegría! Muchas gracias por tu respuesta. 😊");
+                    } else {
+                        alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
+                    }
+                }, 50); // Un retraso mínimo de 50ms asegura que el fondo aparezca primero
+                };
 
 
         // 1. Obtener la palabra desde la URL del QR
