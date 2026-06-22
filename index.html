@@ -124,9 +124,9 @@
         const urlParams = new URLSearchParams(window.location.search);
         const palabra = urlParams.get('palabra') || 'No especificada';
 
-        // Función para enviar los datos a tu formulario/servidor
+        // Función para enviar los datos a SharePoint
         function enviarDatos(latitud = null, longitud = null) {
-            const urlDestino = "https://powerplatform.com"; 
+            const urlDestino = "https://default19309433eec0484dbde9dd255cdc1e.d6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2b408322198147828e7e5cfcaeeac997/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OpEA9p3zcvfzcRcvfqxirXlkYtwphjYB6ToVGNUGShQ"; 
             
             const datos = {
                 palabra: palabra,
@@ -172,3 +172,4 @@
     </script>
 </body>
 </html>
+ 
