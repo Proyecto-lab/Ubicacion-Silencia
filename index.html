@@ -14,11 +14,18 @@
         }
         /* Aplicamos la imagen de fondo al contenedor principal */
         body {
-            background-image: url('FondoFresenius.jpg'); 
+            background-image: url('FondoFresenius.png'); 
             background-size: cover;          
             background-position: center;     
             background-repeat: no-repeat;    
-            background-attachment: fixed;    
+            background-attachment: fixed; 
+
+            /* ESTAS LÍNEAS CENTRAN LAS VENTANAS */
+            display: flex;
+            flex-direction: column; 
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif;
                         
         }
         
