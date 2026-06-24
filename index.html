@@ -14,32 +14,14 @@
         }
         /* Aplicamos la imagen de fondo al contenedor principal */
         body {
-            background-image: url('FondoSilencia.jpg'); 
+            background-image: url('FondoFresenius.jpg'); 
             background-size: cover;          
             background-position: center;     
             background-repeat: no-repeat;    
             background-attachment: fixed;    
-            
-            display: flex;
-            flex-direction: column; /* Cambiado a columna para organizar el título y el modal */
-            justify-content: center;
-            align-items: center;
-            font-family: sans-serif;
+                        
         }
         
-        /* Estilo para que el texto de bienvenida resalte sobre el fondo */
-        .mensaje-resaltado {
-            font-size: 32px;
-            font-weight: bold;
-            color: white;                     
-            text-align: center;
-            padding: 20px 40px;
-            background-color: rgba(0, 0, 0, 0.5); 
-            border-radius: 10px;              
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-            margin-bottom: 20px;
-        }
-
         /* --- ESTILOS PARA LOS CUADROS --- */
         .modal-pregunta {
             background-color: white;
@@ -111,11 +93,7 @@
 </head>
     
 <body>
-   
-    <div class="mensaje-resaltado">
-        Fresenius Medical Care
-    </div>
-
+  
     <!-- CUADRO DE PREGUNTA PRINCIPAL -->
     <div class="modal-pregunta" id="cuadroPregunta">
         <p>Es un placer que nos acompañes.<br>¿Es tu nombre <strong>Paciente Feliz</strong>?</p>
