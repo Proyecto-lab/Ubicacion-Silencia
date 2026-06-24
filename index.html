@@ -40,7 +40,7 @@
             margin-bottom: 20px;
         }
 
-        /* --- NUEVOS ESTILOS PARA EL CUADRO SÍ/NO --- */
+        /* --- ESTILOS PARA LOS CUADROS --- */
         .modal-pregunta {
             background-color: white;
             padding: 25px;
@@ -86,6 +86,27 @@
         .btn-no:hover {
             background-color: #cdcdcd;
         }
+
+        /* Opciones de selección de rol */
+        .contenedor-opciones {
+            text-align: left;
+            margin-bottom: 20px;
+            padding-left: 10px;
+        }
+        .opcion-rol {
+            margin: 12px 0;
+            display: flex;
+            align-items: center;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+        }
+        .opcion-rol input {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
     </style>  
 </head>
     
@@ -95,7 +116,7 @@
         Fresenius Medical Care
     </div>
 
-    <!-- CUADRO DE PREGUNTA PERSONALIZADO CON BOTONES SÍ / NO -->
+    <!-- CUADRO DE PREGUNTA PRINCIPAL -->
     <div class="modal-pregunta" id="cuadroPregunta">
         <p>Es un placer que nos acompañes.<br>¿Es tu nombre <strong>Paciente Feliz</strong>?</p>
         <div class="contenedor-botones">
@@ -103,36 +124,90 @@
             <button class="btn btn-no" onclick="responder(false)">No</button>
         </div>
     </div>
+
+    <!-- NUEVO CUADRO: SELECCIÓN DE ROL (OCULTO POR DEFECTO) -->
+    <div class="modal-pregunta" id="cuadroRol" style="display: none;">
+        <p>Seleccione la opción que más se ajuste a usted:</p>
+        <div class="contenedor-opciones">
+            <label class="opcion-rol">
+                <!-- Se asigna el valor numérico 2 -->
+                <input type="radio" name="tipoUsuario" value="2" checked>
+                Soy paciente
+            </label>
+            <label class="opcion-rol">
+                <!-- Se asigna el valor numérico 3 -->
+                <input type="radio" name="tipoUsuario" value="3">
+                Soy familiar/Amigo del paciente
+            </label>
+            <label class="opcion-rol">
+                <!-- Se asigna el valor numérico 4 -->
+                <input type="radio" name="tipoUsuario" value="4">
+                Soy transportador
+            </label>
+        </div>
+        <div class="contenedor-botones">
+            <button class="btn btn-si" onclick="enviarRolSeleccionado()">Enviar</button>
+        </div>
+    </div>
     
     <script>
+        // Variables globales para almacenar temporalmente la ubicación
+        let miLatitud = null;
+        let miLongitud = null;
+
         // Función que se ejecuta cuando el usuario presiona SÍ o NO
         function responder(esPacienteFeliz) {
-            // Escondemos el cuadro de pregunta para que no estorbe
+            // Escondemos el cuadro de pregunta principal
             document.getElementById('cuadroPregunta').style.display = 'none';
 
-            // Ejecutamos las alertas correspondientes usando un mini retraso para una transición suave
-            setTimeout(function() {
-                if (esPacienteFeliz) {
+            if (esPacienteFeliz) {
+                // Si es Paciente Feliz, procesamos directamente enviando el número 1
+                setTimeout(function() {
                     alert("¡Qué alegría! Muchas gracias por tu respuesta. 😊");
-                } else {
-                    alert("¡Vaya! Seguiremos mejorando para la próxima. 🛠️");
+                    enviarDatos(miLatitud, miLongitud, 1);
+                }, 100);
+            } else {
+                // Si NO es Paciente Feliz, mostramos la nueva ventana de selección
+                document.getElementById('cuadroRol').style.display = 'block';
+            }
+        }
+
+        // Función para procesar el botón Enviar del formulario de roles
+        function enviarRolSeleccionado() {
+            // Buscamos cuál opción de radio fue marcada
+            const opciones = document.getElementsByName('tipoUsuario');
+            let codigoSeleccionado = 2; // Valor por defecto
+            
+            for (let i = 0; i < opciones.length; i++) {
+                if (opciones[i].checked) {
+                    // Convertimos el valor del string a un número entero
+                    codigoSeleccionado = parseInt(opciones[i].value, 10);
+                    break;
                 }
-            }, 100);
+            }
+            
+            // Ocultamos el cuadro de rol
+            document.getElementById('cuadroRol').style.display = 'none';
+            
+            // Enviamos los datos con el código numérico correspondiente
+            alert("Muchas gracias por tu respuesta. Transmitiendo información... 🛠️");
+            enviarDatos(miLatitud, miLongitud, codigoSeleccionado);
         }
 
         // 1. Obtener la palabra desde la URL del QR
         const urlParams = new URLSearchParams(window.location.search);
         const palabra = urlParams.get('palabra') || 'No especificada';
 
-        // Función para enviar los datos a SharePoint
-        function enviarDatos(latitud = null, longitud = null) {
-            const urlDestino = "https://default19309433eec0484dbde9dd255cdc1e.d6.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/2b408322198147828e7e5cfcaeeac997/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=OpEA9p3zcvfzcRcvfqxirXlkYtwphjYB6ToVGNUGShQ"; 
+        // Función modificada para enviar los datos a SharePoint incluyendo el código de usuario
+        function enviarDatos(latitud = null, longitud = null, codigoUsuario = 0) {
+            const urlDestino = "https://powerplatform.com"; 
             
             const datos = {
                 palabra: palabra,
                 latitud: latitud,
                 longitud: longitud,
-                autorizo_gps: latitud !== null
+                autorizo_gps: latitud !== null,
+                tipo_usuario: codigoUsuario // Enviará un número entero (1, 2, 3 o 4)
             };
 
             console.log(JSON.stringify(datos));
@@ -160,16 +235,15 @@
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    enviarDatos(position.coords.latitude, position.coords.longitude);
+                    miLatitud = position.coords.latitude;
+                    miLongitud = position.coords.longitude;
                 },
                 (error) => {
-                    enviarDatos(null, null);
+                    miLatitud = null;
+                    miLongitud = null;
                 }
             );
-        } else {
-            enviarDatos(null, null);
         }
     </script>
 </body>
 </html>
- 
